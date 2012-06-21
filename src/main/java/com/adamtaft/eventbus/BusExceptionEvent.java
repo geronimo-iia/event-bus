@@ -40,9 +40,9 @@ import java.util.EventObject;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class BusExceptionEvent extends EventObject {
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private final Throwable		cause;
+	private final Throwable cause;
 
 	public BusExceptionEvent(final Object subscriber, final Throwable cause) {
 		super(subscriber);

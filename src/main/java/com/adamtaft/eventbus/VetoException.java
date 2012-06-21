@@ -31,18 +31,19 @@
 package com.adamtaft.eventbus;
 
 /**
- * Thrown by subscribers in their {@link EventHandler} annotated
- * methods to indicate that a "veto" of the event has occured.
- * In order for a veto to be allowed, the subscriber must set the {@link EventHandler#canVeto()} property to true,
- * indicating
- * that the subscriber wishes to veto events of the specified type.
+ * Thrown by subscribers in their {@link EventHandler} annotated methods to
+ * indicate that a "veto" of the event has occured. In order for a veto to be
+ * allowed, the subscriber must set the {@link EventHandler#canVeto()} property
+ * to true, indicating that the subscriber wishes to veto events of the
+ * specified type.
  * <p>
- * The VetoException is simply a marker class that extends {@link RuntimeException} to indicate the veto.
+ * The VetoException is simply a marker class that extends
+ * {@link RuntimeException} to indicate the veto.
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public class VetoException extends RuntimeException {
 
-	private static final long	serialVersionUID	= 4567409303947998084L;
+	private static final long serialVersionUID = 4567409303947998084L;
 
 }

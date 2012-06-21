@@ -39,7 +39,7 @@ import junit.framework.TestCase;
  * 
  */
 public class WeakReferenceTest extends TestCase {
-	private static int	handleStringCount	= 0;
+	private static int handleStringCount = 0;
 
 	@Override
 	protected void setUp() throws Exception {

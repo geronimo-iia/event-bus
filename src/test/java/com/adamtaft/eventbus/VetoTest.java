@@ -40,8 +40,8 @@ import junit.framework.TestCase;
  */
 public class VetoTest extends TestCase {
 
-	int	vetoOccur			= 0;
-	int	handleEventWithVeto	= 0;
+	int vetoOccur = 0;
+	int handleEventWithVeto = 0;
 
 	@EventHandler
 	public void handleStringEventWithoutVeto(final String evt) {

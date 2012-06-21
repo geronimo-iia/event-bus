@@ -53,26 +53,32 @@ import org.slf4j.LoggerFactory;
  * in particular can benefit from an event bus architecture, as opposed to the
  * traditional event listener architecture it employs.
  * <p>
- * The BasicEventBus class is thread safe and uses a background thread to notify the subscribers of the event. The
- * subscribers are notified in a serial fashion, and only one event will be published at a time. Though, the
+ * The BasicEventBus class is thread safe and uses a background thread to notify
+ * the subscribers of the event. The subscribers are notified in a serial
+ * fashion, and only one event will be published at a time. Though, the
  * {@link #publish(Object)} method is done in a non-blocking way.
  * <p>
- * Subscribers subscribe to the EventBus using the {@link #subscribe(Object)} method. A specific subscriber type is not
- * required, but the subscriber will be reflected to find all methods annotated with the {@link EventHandler}
- * annotations. These methods will be invoked as needed by the event bus based on the type of the first parameter to the
- * annotated method.
+ * Subscribers subscribe to the EventBus using the {@link #subscribe(Object)}
+ * method. A specific subscriber type is not required, but the subscriber will
+ * be reflected to find all methods annotated with the {@link EventHandler}
+ * annotations. These methods will be invoked as needed by the event bus based
+ * on the type of the first parameter to the annotated method.
  * <p>
- * An event handler can indicate that it can veto events by setting the {@link EventHandler#canVeto()} value to true.
- * This will inform the EventBus of the subscriber's desire to veto the event. A vetoed event will not be sent to the
- * regular subscribers.
+ * An event handler can indicate that it can veto events by setting the
+ * {@link EventHandler#canVeto()} value to true. This will inform the EventBus
+ * of the subscriber's desire to veto the event. A vetoed event will not be sent
+ * to the regular subscribers.
  * <p>
- * During publication of an event, all veto EventHandler methods will be notified first and allowed to throw a
- * {@link VetoException} indicating that the event has been vetoed and should not be published to the remaining event
- * handlers. If no vetoes have been made, the regular subscriber handlers will be notified of the event.
+ * During publication of an event, all veto EventHandler methods will be
+ * notified first and allowed to throw a {@link VetoException} indicating that
+ * the event has been vetoed and should not be published to the remaining event
+ * handlers. If no vetoes have been made, the regular subscriber handlers will
+ * be notified of the event.
  * <p>
- * Subscribers are stored using a {@link WeakReference} such that a memory leak can be avoided if the client fails to
- * unsubscribe at the end of the use. However, calling the {@link #unsubscribe(Object)} method is highly recommended
- * none-the-less.
+ * Subscribers are stored using a {@link WeakReference} such that a memory leak
+ * can be avoided if the client fails to unsubscribe at the end of the use.
+ * However, calling the {@link #unsubscribe(Object)} method is highly
+ * recommended none-the-less.
  * 
  * @author Adam Taft
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
@@ -82,34 +88,34 @@ public final class BasicEventBus implements EventBus {
 	 * Logger 'BasicEventBus.class' user to warn some exception when they occurs
 	 * on event handler.
 	 */
-	private final Logger						logger		= LoggerFactory.getLogger(BasicEventBus.class);
+	private final Logger logger = LoggerFactory.getLogger(BasicEventBus.class);
 
-	private final List<HandlerInfo>				handlers	= new CopyOnWriteArrayList<HandlerInfo>();
-	private final BlockingQueue<Object>			queue		= new LinkedBlockingQueue<Object>();
-	private final BlockingQueue<HandlerInfo>	killQueue	= new LinkedBlockingQueue<HandlerInfo>();
+	private final List<HandlerInfo> handlers = new CopyOnWriteArrayList<HandlerInfo>();
+	private final BlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
+	private final BlockingQueue<HandlerInfo> killQueue = new LinkedBlockingQueue<HandlerInfo>();
 
 	/**
 	 * The ExecutorService used to handle event delivery to the event handlers.
 	 */
-	private final ExecutorService				executorService;
+	private final ExecutorService executorService;
 
 	/**
 	 * Should the event bus wait for the regular handlers to finish processing
 	 * the event messages before continuing to the next event. Defaults to
 	 * 'false' which is sensible for most use cases.
 	 */
-	private final boolean						waitForHandlers;
+	private final boolean waitForHandlers;
 
 	/**
-	 * Default constructor sets up the executorService property to use the {@link Executors#newCachedThreadPool()}
-	 * implementation. The configured
+	 * Default constructor sets up the executorService property to use the
+	 * {@link Executors#newCachedThreadPool()} implementation. The configured
 	 * ExecutorService will have a custom ThreadFactory such that the threads
 	 * returned will be daemon threads (and thus not block the application from
 	 * shutting down).
 	 */
 	public BasicEventBus() {
 		this(Executors.newCachedThreadPool(new ThreadFactory() {
-			private final ThreadFactory	delegate	= Executors.defaultThreadFactory();
+			private final ThreadFactory delegate = Executors.defaultThreadFactory();
 
 			@Override
 			public Thread newThread(final Runnable runnable) {
@@ -136,14 +142,17 @@ public final class BasicEventBus implements EventBus {
 
 	/**
 	 * Subscribe the specified instance as a potential event subscriber. The
-	 * subscriber must annotate a method (or two) with the {@link EventHandler} annotation if it expects to receive
-	 * notifications.
+	 * subscriber must annotate a method (or two) with the {@link EventHandler}
+	 * annotation if it expects to receive notifications.
 	 * <p>
-	 * Note that the EventBus maintains a {@link WeakReference} to the subscriber, but it is still adviced to call the
-	 * {@link #unsubscribe(Object)} method if the subscriber does not wish to receive events any longer.
+	 * Note that the EventBus maintains a {@link WeakReference} to the
+	 * subscriber, but it is still adviced to call the
+	 * {@link #unsubscribe(Object)} method if the subscriber does not wish to
+	 * receive events any longer.
 	 * 
 	 * @param subscriber
-	 *            The subscriber object which will receive notifications on {@link EventHandler} annotated methods.
+	 *            The subscriber object which will receive notifications on
+	 *            {@link EventHandler} annotated methods.
 	 */
 	@Override
 	public void subscribe(final Object subscriber) {
@@ -363,13 +372,12 @@ public final class BasicEventBus implements EventBus {
 	 * HandlerInfo is used to hold the subscriber details.
 	 */
 	private static class HandlerInfo {
-		private final Class<?>			eventClass;
-		private final Method			method;
-		private final WeakReference<?>	subscriber;
-		private final boolean			vetoHandler;
+		private final Class<?> eventClass;
+		private final Method method;
+		private final WeakReference<?> subscriber;
+		private final boolean vetoHandler;
 
-		public HandlerInfo(final Class<?> eventClass, final Method method, final Object subscriber,
-				final boolean vetoHandler) {
+		public HandlerInfo(final Class<?> eventClass, final Method method, final Object subscriber, final boolean vetoHandler) {
 			this.eventClass = eventClass;
 			this.method = method;
 			this.subscriber = new WeakReference<Object>(subscriber);
@@ -399,8 +407,8 @@ public final class BasicEventBus implements EventBus {
 	 * exception thrown and publishes an event back onto the bus.
 	 */
 	private class HandlerInfoCallable implements Callable<Boolean> {
-		private final HandlerInfo	handlerInfo;
-		private final Object		event;
+		private final HandlerInfo handlerInfo;
+		private final Object event;
 
 		public HandlerInfoCallable(final HandlerInfo handlerInfo, final Object event) {
 			this.handlerInfo = handlerInfo;
@@ -410,12 +418,14 @@ public final class BasicEventBus implements EventBus {
 		/**
 		 * Invokes the HandlerInfo's callback handler method. If any exeptions
 		 * are thrown, besides a VetoException, a {@link BusExceptionEvent} will
-		 * be published to the bus with the root cause of the problem. If a {@link VetoException} is thrown from the
-		 * invoked method, a {@link VetoEvent} will be published to the bus and the call will
+		 * be published to the bus with the root cause of the problem. If a
+		 * {@link VetoException} is thrown from the invoked method, a
+		 * {@link VetoEvent} will be published to the bus and the call will
 		 * return true.
 		 * <p>
-		 * The call has been modified to not throw any Exceptions. It will not, unlike the interface defintion, throw an
-		 * exception. All exceptions are handled locally.
+		 * The call has been modified to not throw any Exceptions. It will not,
+		 * unlike the interface defintion, throw an exception. All exceptions
+		 * are handled locally.
 		 * 
 		 * @return True if the invoke was vetoed, false otherwise.
 		 */

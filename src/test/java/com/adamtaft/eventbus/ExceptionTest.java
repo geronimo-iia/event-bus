@@ -40,9 +40,9 @@ import junit.framework.TestCase;
  */
 public class ExceptionTest extends TestCase {
 
-	private int	throwRuntimeExceptionCount;
-	private int	throwExceptionCount;
-	private int	handleExceptionsCount;
+	private int throwRuntimeExceptionCount;
+	private int throwExceptionCount;
+	private int handleExceptionsCount;
 
 	@Override
 	protected void setUp() throws Exception {

@@ -42,8 +42,8 @@ import junit.framework.TestCase;
  */
 public class SimpleTest extends TestCase {
 
-	private int	handleStringCount;
-	private int	handleActionEventCount;
+	private int handleStringCount;
+	private int handleActionEventCount;
 
 	@Override
 	protected void setUp() throws Exception {

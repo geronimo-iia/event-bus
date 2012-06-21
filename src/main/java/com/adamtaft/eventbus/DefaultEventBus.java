@@ -42,7 +42,7 @@ package com.adamtaft.eventbus;
 public final class DefaultEventBus {
 
 	private static class EventBusFactory {
-		private static final EventBus	INSTANCE	= new BasicEventBus();
+		private static final EventBus INSTANCE = new BasicEventBus();
 	}
 
 	private DefaultEventBus() {
