@@ -183,7 +183,7 @@
 		<repository>
 			<id>event-bus-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<url>https://github.com/geronimo-iia/event-bus/repository/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -194,7 +194,7 @@
 		<repository>
 			<id>event-bus-intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
+			<url>https://github.com/geronimo-iia/event-bus/repository/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -207,7 +207,7 @@
 		<pluginRepository>
 			<id>event-bus-intelligents-ia-releases</id>
 			<name>Intelligents-ia releases repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/releases</url>
+			<url>https://github.com/geronimo-iia/event-bus/repository/releases</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -218,7 +218,7 @@
 		<pluginRepository>
 			<id>event-bus-intelligents-ia-snapshot</id>
 			<name>Intelligents-ia snapshot repository On github</name>
-			<url>https://github.com/geronimo-iia/keystone/repository/snapshots</url>
+			<url>https://github.com/geronimo-iia/event-bus/repository/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
