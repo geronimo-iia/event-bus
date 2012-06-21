@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.intelligents-ia</groupId>
+		<artifactId>intelligents-ia</artifactId>
+		<version>1.2</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.intelligents-ia</groupId>
+	<artifactId>event-bus</artifactId>
+	<packaging>jar</packaging>
+	<name>Event Bus</name>
+	<version>1.1-SNAPSHOT</version>
+	<description>Event bus based on work of Adam Taft.
+Original : http://simpleeventbus.googlecode.com/svn</description>
+	<url>http://intelligents-ia.com</url>
+	<inceptionYear>2011</inceptionYear>
+	<developers>
+		<developer>
+			<id>jerome.guibert.intelligents.ia.com</id>
+			<name>Jerome Guibert</name>
+			<organization>Intelligents-ia</organization>
+			<email>jguibert@intelligents-ia.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License version 2.1</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+		</license>
+	</licenses>
+	<scm>
+		<url>svn:https://intelligents-ia.googlecode.com/svn/trunk/eventbus</url>
+		<connection>scm:svn:https://intelligents-ia.googlecode.com/svn/trunk/eventbus/</connection>
+	</scm>
+	<organization>
+		<name>Intelligents-ia</name>
+		<url>http://intelligents-ia.com</url>
+	</organization>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.6.1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>intelligents-ia</id>
+			<name>Intelligents-ia Repository On Intelligents-ia Web Site</name>
+			<url>http://intelligents-ia.com/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<properties>
+		<skipTests>true</skipTests>
+	</properties>
+</project>
