@@ -7,6 +7,56 @@ This library, as is and modified, can be used for free in personal and commercia
 Original project came from "Adam Taft":https://code.google.com/p/simpleeventbus/
 
 
+h1. Maven Integration
+
+h2. Dependency
+
+<pre>
+<code>
+	<dependency>
+		<groupId>org.intelligents-ia</groupId>
+		<artifactId>event-bus</artifactId>
+		<version>1.2</version>
+	<dependency>
+</code>
+</pre>
+
+
+h2. Repository
+
+<pre>
+<code>
+<repositories>
+		<repository>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>intelligents-ia-releases</id>
+			<name>Intelligents-ia releases repository</name>
+			<url>http://mvn.intelligents-ia.com/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+</code>
+</pre>
+
+
+
 h1. Event Bus Pattern
 
 There are many patterns devoted to reducing component coupling. An event bus is one such pattern where objects can "subscribe" to receive certain specific "events" from the bus. As an event is "published" to the event bus, it will be propagated to any subscriber which is interested in the event type. This allows each component to couple solely to the event bus itself and not directly with each other.
