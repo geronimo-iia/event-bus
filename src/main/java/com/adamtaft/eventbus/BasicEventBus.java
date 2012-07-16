@@ -44,9 +44,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * A simple Event Bus implementation which receives events or messages from
  * various sources and distributes them to all subscribers of the event type.
@@ -85,12 +82,6 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
 public final class BasicEventBus implements EventBus {
-	/**
-	 * Logger 'BasicEventBus.class' user to warn some exception when they occurs
-	 * on event handler.
-	 */
-	private final Logger logger = LoggerFactory.getLogger(BasicEventBus.class);
-
 	private final List<HandlerInfo> handlers = new CopyOnWriteArrayList<HandlerInfo>();
 	private final BlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
 	private final BlockingQueue<HandlerInfo> killQueue = new LinkedBlockingQueue<HandlerInfo>();
@@ -467,10 +458,7 @@ public final class BasicEventBus implements EventBus {
 					publish(new VetoEvent(event));
 					return true;
 				}
-
 				publish(new BusExceptionEvent(handlerInfo, cause));
-
-				logger.warn("An exception occur when callback event handler method was invoked", e);
 				return false;
 			}
 		}
