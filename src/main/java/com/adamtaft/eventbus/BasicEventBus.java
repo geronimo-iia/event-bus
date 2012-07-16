@@ -42,6 +42,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -246,6 +247,19 @@ public final class BasicEventBus implements EventBus {
 	@Override
 	public boolean hasPendingEvents() {
 		return queue.size() > 0;
+	}
+
+	/**
+	 * Shutdown underlaying events and wait until terminaison or time out
+	 * occurs.
+	 * 
+	 * @param timeout
+	 * @param unit
+	 * @throws InterruptedException
+	 */
+	public void shutdown(long timeout, TimeUnit unit) throws InterruptedException {
+		executorService.shutdown();
+		executorService.awaitTermination(timeout, unit);
 	}
 
 	/**
