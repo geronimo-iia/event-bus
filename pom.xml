@@ -25,7 +25,8 @@
 	</licenses>
 	<scm>
 		<url>https://github.com/geronimo-iia/event-bus</url>
-		<connection>scm:git:ssh://git@github.com/geronimo-iia/event-bus.git</connection>
+		<!-- <connection>scm:git:ssh://git@github.com/geronimo-iia/event-bus.git</connection> -->
+		<connection>scm:git:https://github.com/geronimo-iia/event-bus.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/geronimo-iia/event-bus.git</developerConnection>
 	</scm>
 	<organization>
