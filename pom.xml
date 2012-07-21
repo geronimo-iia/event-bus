@@ -23,15 +23,12 @@
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
 		</license>
 	</licenses>
-<!--
+	<!-- <scm> <connection>scm:git:https://github.com/geronimo-iia/event-bus.git</connection> 
+		<url>https://github.com/geronimo-iia/event-bus.git</url> </scm> -->
 	<scm>
-		<connection>scm:git:https://github.com/geronimo-iia/event-bus.git</connection>
-		<url>https://github.com/geronimo-iia/event-bus.git</url>
-	</scm>
--->
-	<scm>
-		<connection>scm:git:ssh://git@github.com/geronimo-iia/event-bus.git</connection>
-		<url>git:ssh://git@github.com/geronimo-iia/event-bus.git</url>
+		<connection>scm:git:git@github.com:geronimo-iia/event-bus.git</connection>
+		<url>scm:git:git@github.com:geronimo-iia/event-bus.git</url>
+		<developerConnection>scm:git:git@github.com:geronimo-iia/event-bus.git</developerConnection>
 	</scm>
 	<organization>
 		<name>Intelligents-ia</name>
