@@ -16,7 +16,7 @@ h2. Dependency
 	<dependency>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>event-bus</artifactId>
-		<version>1.2</version>
+		<version>1.3.0</version>
 	<dependency>
 </code>
 </pre>
@@ -141,7 +141,12 @@ This EventBus allows publish-subscribe-style communication between components wi
 
 
 
+h1. Change log
 
+
+h2. 1.3.0
+
+adding "BasicEventBus#shutdown(long timeout, TimeUnit unit)"
 
 
 
