@@ -28,14 +28,33 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.adamtaft.eventbus;
+package org.intelligentsia.eventbus;
+
+import java.util.EventObject;
 
 /**
- * Monitoring Interface of Event Bus.
+ * For any exceptions that occur on the bus during handler execution, this event
+ * will be published.
  * 
- * @author JGT
- * 
+ * @author Adam Taft
+ * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  */
-public interface EventBusMonitor {
+public class BusExceptionEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
+
+	private final Throwable cause;
+
+	public BusExceptionEvent(final Object subscriber, final Throwable cause) {
+		super(subscriber);
+		this.cause = cause;
+	}
+
+	public Object getSubscriber() {
+		return getSource();
+	}
+
+	public Throwable getCause() {
+		return cause;
+	}
 
 }

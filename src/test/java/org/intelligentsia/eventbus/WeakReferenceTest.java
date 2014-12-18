@@ -28,9 +28,10 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.adamtaft.eventbus;
+package org.intelligentsia.eventbus;
 
-import java.awt.event.ActionEvent;
+import org.intelligentsia.eventbus.DefaultEventBus;
+import org.intelligentsia.eventbus.EventHandler;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -40,64 +41,56 @@ import junit.framework.TestCase;
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class SimpleTest extends TestCase {
-
-	private int handleStringCount;
-	private int handleActionEventCount;
+public class WeakReferenceTest extends TestCase {
+	private static int handleStringCount = 0;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		handleStringCount = 0;
-		handleActionEventCount = 0;
+		WeakReferenceTest.handleStringCount = 0;
 	}
 
 	@EventHandler
 	public void handleString(final String evt) {
-		System.out.println("handleString called: " + evt);
-		handleStringCount++;
+		WeakReferenceTest.handleStringCount++;
 	}
 
-	@EventHandler
-	public void handleActionEvent(final ActionEvent evt) {
-		System.out.println("handleActionEvent called: " + evt);
-		handleActionEventCount++;
-	}
+	public void testWeakReference() throws InterruptedException {
+		// create an event handler for this example
+		WeakReferenceTest wre = new WeakReferenceTest();
 
-	public void testSubscribeUnsubscribe() throws InterruptedException {
+		// subscribe the handler to the event bus
+		DefaultEventBus.subscribe(wre);
 
-		// subscribe it to the EventBus
-		DefaultEventBus.subscribe(this);
+		// send an event to the buss
+		DefaultEventBus.publish("First String Event");
 
-		// publish some events to the bus.
-		DefaultEventBus.publish("Some String Event");
-		DefaultEventBus.publish(new ActionEvent("Fake Action Event Source", -1, "Fake Command"));
-
-		// this shouldn't be seen, since no handler is interested in Object
-		DefaultEventBus.publish(new Object());
-
-		// wait here to ensure all events (above) have been pushed out before
-		// unsubscribing. Unsubscribe may happen before the event is delivered.
+		// wait here to ensure all events (above) have been pushed out.
 		while (DefaultEventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
 
-		Assert.assertTrue(handleActionEventCount == 1);
-		Assert.assertTrue(handleStringCount == 1);
+		Assert.assertTrue(WeakReferenceTest.handleStringCount == 1);
 
-		// don't forget to unsubscribe if you're done.
-		// not required in this case, since the program ends here anyway.
-		DefaultEventBus.unsubscribe(this);
+		// set the reference to null
+		// IT'S STILL BETTER TO UNSUBSCRIBE. THIS SHOULD ONLY BE CONSIDERED A
+		// FALLBACK.
+		wre = null;
 
-		// Future messages shouldn't be seen by the SimpleExample handler after
-		// being unsubscribed.
-		DefaultEventBus.publish("This event should not be seen after the unsubscribe call.");
+		// Pretty please, run the garbage collection.
+		System.gc();
 
+		// Ideally, this second event won't show up. YMMV
+		// You might see this second event if the garbage collector didn't run
+		// This is system and JVM specific. This example does work for me.
+		DefaultEventBus.publish("Second String Event");
+
+		// wait here to ensure all events (above) have been pushed out.
 		while (DefaultEventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
-		Assert.assertTrue(handleActionEventCount == 1);
-		Assert.assertTrue(handleStringCount == 1);
+
+		Assert.assertTrue(WeakReferenceTest.handleStringCount == 1);
 	}
 
 }

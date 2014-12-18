@@ -1,4 +1,6 @@
-h1. Overview
+Overview
+========
+
 
 The Java Event Bus is an "event bus" library implementation that helps to decouple highly dependent components by using a subscribe and publish type architecture. An event bus helps to simplify event communication between multiple components and promotes a more stable and simplistic decoupled interface between each.
 
@@ -7,71 +9,35 @@ This library, as is and modified, can be used for free in personal and commercia
 Original project came from "Adam Taft":https://code.google.com/p/simpleeventbus/
 
 
-h1. Maven Integration
+Maven Integration
+----------------
 
-h2. Dependency
-
-<pre>
-<code>
-	<dependency>
+``` java
+<dependency>
 		<groupId>org.intelligents-ia</groupId>
 		<artifactId>event-bus</artifactId>
-		<version>1.3.0</version>
-	<dependency>
-</code>
-</pre>
+		<version>1.3.1</version>
+<dependency>
+```
 
 
-h2. Repository
-
-<pre>
-<code>
-<repositories>
-		<repository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>intelligents-ia-releases</id>
-			<name>Intelligents-ia releases repository</name>
-			<url>http://mvn.intelligents-ia.com/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-</code>
-</pre>
-
-
-
-h1. Event Bus Pattern
+Event Bus Pattern
+=================
 
 There are many patterns devoted to reducing component coupling. An event bus is one such pattern where objects can "subscribe" to receive certain specific "events" from the bus. As an event is "published" to the event bus, it will be propagated to any subscriber which is interested in the event type. This allows each component to couple solely to the event bus itself and not directly with each other.
 
 An event bus can be thought of as a replacement for the observer pattern, where in the observer pattern, each component is observing an observable directly. In the event bus pattern, each component simply subscribes to the event bus and waits for its event notification methods to be invoked when interesting events have occurred. In this way, an event bus can be thought of like the observer pattern with an extra layer of decoupling.
 
-h1. Example Use
 
+Example Use
+============
 
-h2. Simple example
+Simple example
+---------------
 
 A subscriber to the event bus has to simply annotate one or more methods with the @EventHandler annotation. Additionally, the subscriber must subscribe to the bus by calling its subscribe() method. A method annotated with @EventHandler must have a single parameter as an argument to the method which is the event type of interest.
 
-<pre>
-<code>
+``` java
 public class MyEventHandler {
   @EventHandler
   public void handleStringEvent(String event) {
@@ -86,16 +52,15 @@ public class MyEventHandler {
     DefaultEventBus.publish("Some String Event");
   }
 }
-</code>
-</pre>
+```
 
 
-h2. Vetoing
+Vetoing
+-------
 
 A nice feature of this event bus is the ability for a handler to veto certain events. In this way, a vetoed event will not be delivered to any of the regular listeners for that event type. An event handler (subscriber) that wishes to veto an event must simply set the @EventHandler(canVeto=true) parameter and then throw a VetoException, like this:
 
-<pre>
-<code>
+``` java
 public class MyEventHandler {
   @EventHandler
   public void handleStringEvent(String event) {
@@ -117,20 +82,20 @@ public class MyEventHandler {
     DefaultEventBus.publish("Some String Event");
   }
 }
-</code>
-</pre>
+```
 
 
-h2. Weak References
-
+Weak References
+---------------
 
 The DefaultEventBus implements of the EventBus interface uses a WeakReference to store the internal subscriber object. Thus, if the subscriber looses all its strong references, the event bus will automatically remove the garbage collected reference to the subscriber. This is a nice feature to help prevent memory leaks, however it is preferred to call the EventBus unsubscribe() method instead.
 
-A consequence of using WeakReference is that subscribers created without a strong reference may never really receive events. For example, subscribers created as anonymous references, etc. 
+A consequence of using WeakReference is that subscribers created without a strong reference may never really receive events. For example, subscribers created as anonymous references, etc.
 A future version of this bus may allow for different types of references to be used in the internal bus code.
 
 
-h1. Other Similar Projects
+Other Similar Projects
+======================
 
 
 An existing Java project already exists, called Event Bus by Michael Bushe, that implements the event bus pattern. This project attempts to accomplish a smaller subset of the existing functionality of Mr. Bushe's project. One should consider his project when evaluating this one, as his may better suit your needs. This project is likely more simple to use, but it does not offer the same number of features.
@@ -141,17 +106,15 @@ This EventBus allows publish-subscribe-style communication between components wi
 
 
 
-h1. Change log
+Change log
+==========
 
+1.3.1
+-----
 
-h2. 1.3.0
+* publication on maven central
+
+1.3.0
+-----
 
 adding "BasicEventBus#shutdown(long timeout, TimeUnit unit)"
-
-
-
-
-
-
-
-

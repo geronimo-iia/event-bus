@@ -28,47 +28,64 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.adamtaft.eventbus;
+package org.intelligentsia.eventbus;
+
+import org.intelligentsia.eventbus.BusExceptionEvent;
+import org.intelligentsia.eventbus.DefaultEventBus;
+import org.intelligentsia.eventbus.EventHandler;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
 
 /**
- * An {@link EventBus} factory that will return a singleton implementation. By
- * default, a {@link BasicEventBus} implementation will be returned via the
- * factory methods.
- * 
- * 
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
+ * 
  */
-public final class DefaultEventBus {
+public class ExceptionTest extends TestCase {
 
-	private static class EventBusFactory {
-		private static final EventBus INSTANCE = new BasicEventBus();
+	private int throwRuntimeExceptionCount;
+	private int throwExceptionCount;
+	private int handleExceptionsCount;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		throwRuntimeExceptionCount = 0;
+		throwExceptionCount = 0;
+		handleExceptionsCount = 0;
 	}
 
-	private DefaultEventBus() {
-		if (EventBusFactory.INSTANCE != null) {
-			throw new IllegalStateException("Already instantiated");
+	@EventHandler
+	public void throwRuntimeException(final String event) {
+		throwRuntimeExceptionCount++;
+		throw new RuntimeException("Some RuntimeException");
+	}
+
+	@EventHandler
+	public void throwException(final String event) throws Exception {
+		throwExceptionCount++;
+		throw new Exception("Some Exception");
+	}
+
+	@EventHandler
+	public void handleExceptions(final BusExceptionEvent event) {
+		handleExceptionsCount++;
+		System.out.println("Exception Handled was: " + event.getCause());
+	}
+
+	public void testException() throws InterruptedException {
+		DefaultEventBus.subscribe(this);
+		DefaultEventBus.publish("Some String Event");
+		while (DefaultEventBus.hasPendingEvents()) {
+			Thread.sleep(50);
 		}
-	}
-
-	public static EventBus getInstance() {
-		return EventBusFactory.INSTANCE;
-	}
-
-	public static void subscribe(final Object subscriber) {
-		EventBusFactory.INSTANCE.subscribe(subscriber);
-	}
-
-	public static void unsubscribe(final Object subscriber) {
-		EventBusFactory.INSTANCE.unsubscribe(subscriber);
-	}
-
-	public static void publish(final Object event) {
-		EventBusFactory.INSTANCE.publish(event);
-	}
-
-	public static boolean hasPendingEvents() {
-		return EventBusFactory.INSTANCE.hasPendingEvents();
+		// we launch one exception by throwException
+		Assert.assertTrue(throwExceptionCount == 1);
+		// one runtime launch by throwRuntimeException
+		Assert.assertTrue(throwRuntimeExceptionCount == 1);
+		// two : throwException + throwRuntimeException
+		Assert.assertTrue(handleExceptionsCount == 2);
 	}
 
 }
