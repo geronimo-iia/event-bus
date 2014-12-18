@@ -30,20 +30,16 @@
  */
 package org.intelligentsia.eventbus;
 
-import org.intelligentsia.eventbus.DefaultEventBus;
-import org.intelligentsia.eventbus.EventHandler;
-import org.intelligentsia.eventbus.VetoEvent;
-import org.intelligentsia.eventbus.VetoException;
-
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Test;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class VetoTest extends TestCase {
+public class VetoTest {
 
 	int vetoOccur = 0;
 	int handleEventWithVeto = 0;
@@ -67,19 +63,20 @@ public class VetoTest extends TestCase {
 		// System.out.println("Veto has occured on bus: " + vetoEvent);
 	}
 
+	@Test
 	public void testVeto() throws InterruptedException {
-
+		final EventBus eventBus = new BasicEventBus();
 		// subscribe it to the bus
-		DefaultEventBus.subscribe(this);
+		eventBus.subscribe(this);
 
 		// publish an event that will get vetoed
-		DefaultEventBus.publish("String Event (should be vetoed)");
+		eventBus.publish("String Event (should be vetoed)");
 
 		// wait here to ensure all events (above) have been pushed out.
-		while (DefaultEventBus.hasPendingEvents()) {
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
-
+		Assert.assertTrue(!eventBus.hasPendingEvents());
 		Assert.assertTrue(vetoOccur == 1);
 		Assert.assertTrue(handleEventWithVeto == 1);
 	}

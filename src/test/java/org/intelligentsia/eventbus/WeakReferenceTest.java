@@ -30,23 +30,21 @@
  */
 package org.intelligentsia.eventbus;
 
-import org.intelligentsia.eventbus.DefaultEventBus;
-import org.intelligentsia.eventbus.EventHandler;
-
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class WeakReferenceTest extends TestCase {
+public class WeakReferenceTest {
 	private static int handleStringCount = 0;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		WeakReferenceTest.handleStringCount = 0;
 	}
 
@@ -55,21 +53,23 @@ public class WeakReferenceTest extends TestCase {
 		WeakReferenceTest.handleStringCount++;
 	}
 
+	@Test
 	public void testWeakReference() throws InterruptedException {
 		// create an event handler for this example
 		WeakReferenceTest wre = new WeakReferenceTest();
 
 		// subscribe the handler to the event bus
-		DefaultEventBus.subscribe(wre);
+		final EventBus eventBus = new BasicEventBus();
+		eventBus.subscribe(wre);
 
 		// send an event to the buss
-		DefaultEventBus.publish("First String Event");
+		eventBus.publish("First String Event");
 
 		// wait here to ensure all events (above) have been pushed out.
-		while (DefaultEventBus.hasPendingEvents()) {
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
-
+		Thread.sleep(50);
 		Assert.assertTrue(WeakReferenceTest.handleStringCount == 1);
 
 		// set the reference to null
@@ -83,10 +83,10 @@ public class WeakReferenceTest extends TestCase {
 		// Ideally, this second event won't show up. YMMV
 		// You might see this second event if the garbage collector didn't run
 		// This is system and JVM specific. This example does work for me.
-		DefaultEventBus.publish("Second String Event");
+		eventBus.publish("Second String Event");
 
 		// wait here to ensure all events (above) have been pushed out.
-		while (DefaultEventBus.hasPendingEvents()) {
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
 

@@ -30,27 +30,24 @@
  */
 package org.intelligentsia.eventbus;
 
-import org.intelligentsia.eventbus.BusExceptionEvent;
-import org.intelligentsia.eventbus.DefaultEventBus;
-import org.intelligentsia.eventbus.EventHandler;
-
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class ExceptionTest extends TestCase {
+public class ExceptionTest {
 
 	private int throwRuntimeExceptionCount;
 	private int throwExceptionCount;
 	private int handleExceptionsCount;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		throwRuntimeExceptionCount = 0;
 		throwExceptionCount = 0;
 		handleExceptionsCount = 0;
@@ -74,10 +71,13 @@ public class ExceptionTest extends TestCase {
 		System.out.println("Exception Handled was: " + event.getCause());
 	}
 
+	@Test
 	public void testException() throws InterruptedException {
-		DefaultEventBus.subscribe(this);
-		DefaultEventBus.publish("Some String Event");
-		while (DefaultEventBus.hasPendingEvents()) {
+		final EventBus eventBus = new BasicEventBus();
+
+		eventBus.subscribe(this);
+		eventBus.publish("Some String Event");
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
 		// we launch one exception by throwException
