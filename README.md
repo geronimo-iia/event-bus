@@ -14,9 +14,9 @@ Maven Integration
 
 ``` java
 <dependency>
-		<groupId>org.intelligents-ia</groupId>
-		<artifactId>event-bus</artifactId>
-		<version>1.3.1</version>
+	<groupId>org.intelligents-ia</groupId>
+	<artifactId>event-bus</artifactId>
+	<version>1.3.1</version>
 <dependency>
 ```
 
