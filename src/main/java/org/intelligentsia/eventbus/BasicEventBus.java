@@ -248,7 +248,7 @@ public final class BasicEventBus implements EventBus {
 	 * @param unit
 	 * @throws InterruptedException
 	 */
-	public void shutdown(long timeout, TimeUnit unit) throws InterruptedException {
+	public void shutdown(final long timeout, final TimeUnit unit) throws InterruptedException {
 		executorService.shutdown();
 		executorService.awaitTermination(timeout, unit);
 	}

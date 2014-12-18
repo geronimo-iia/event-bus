@@ -32,25 +32,23 @@ package org.intelligentsia.eventbus;
 
 import java.awt.event.ActionEvent;
 
-import org.intelligentsia.eventbus.DefaultEventBus;
-import org.intelligentsia.eventbus.EventHandler;
-
 import junit.framework.Assert;
-import junit.framework.TestCase;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
  * @author <a href="mailto:jguibert@intelligents-ia.com" >Jerome Guibert</a>
  * 
  */
-public class SimpleTest extends TestCase {
+public class SimpleTest {
 
 	private int handleStringCount;
 	private int handleActionEventCount;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		handleStringCount = 0;
 		handleActionEventCount = 0;
 	}
@@ -67,21 +65,22 @@ public class SimpleTest extends TestCase {
 		handleActionEventCount++;
 	}
 
+	@Test
 	public void testSubscribeUnsubscribe() throws InterruptedException {
-
+		final EventBus eventBus = new BasicEventBus();
 		// subscribe it to the EventBus
-		DefaultEventBus.subscribe(this);
+		eventBus.subscribe(this);
 
 		// publish some events to the bus.
-		DefaultEventBus.publish("Some String Event");
-		DefaultEventBus.publish(new ActionEvent("Fake Action Event Source", -1, "Fake Command"));
+		eventBus.publish("Some String Event");
+		eventBus.publish(new ActionEvent("Fake Action Event Source", -1, "Fake Command"));
 
 		// this shouldn't be seen, since no handler is interested in Object
-		DefaultEventBus.publish(new Object());
+		eventBus.publish(new Object());
 
 		// wait here to ensure all events (above) have been pushed out before
 		// unsubscribing. Unsubscribe may happen before the event is delivered.
-		while (DefaultEventBus.hasPendingEvents()) {
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
 
@@ -90,13 +89,13 @@ public class SimpleTest extends TestCase {
 
 		// don't forget to unsubscribe if you're done.
 		// not required in this case, since the program ends here anyway.
-		DefaultEventBus.unsubscribe(this);
+		eventBus.unsubscribe(this);
 
 		// Future messages shouldn't be seen by the SimpleExample handler after
 		// being unsubscribed.
-		DefaultEventBus.publish("This event should not be seen after the unsubscribe call.");
+		eventBus.publish("This event should not be seen after the unsubscribe call.");
 
-		while (DefaultEventBus.hasPendingEvents()) {
+		while (eventBus.hasPendingEvents()) {
 			Thread.sleep(50);
 		}
 		Assert.assertTrue(handleActionEventCount == 1);
